@@ -35,7 +35,7 @@ public class Main {
      */
  
     public void start() {
-        while(true) {
+        while (true) {
             System.out.println("\n\t----------------------------------------------------------");
             System.out.println("\t                   STUDENT APPLICATION                    ");
             System.out.println("\t----------------------------------------------------------");
@@ -52,7 +52,7 @@ public class Main {
             System.out.println("\n\t----------------------------------------------------------\n");
             System.out.print("\n\tEnter your choice: ");
             int choice = scanner.nextInt();
-            switch(choice) {
+            switch (choice) {
                 case 1:
                     studentController.addStudentDetails();
                     break;
