@@ -128,14 +128,7 @@ public class EventController {
                 System.out.println("No events available.");
             } else {
                 for (Event event : events) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.append("\n\tEvent Id            : ").append(event.getEventId())
-                        .append("\n\tEvent Name          : ").append(event.getEventName())
-                        .append("\n\tEvent Venue         : ").append(event.getEventVenue())
-                        .append("\n\tEvent Date          : ").append(event.getEventDate())
-                        .append("\n\tEvent Incharge      : ").append(event.getEventIncharge())
-                        .append("\n\tEvent Category      : ").append(event.getEventCategory());
-                    System.out.println(stringBuilder);
+                    System.out.println(event);
                 }
             }
         } catch (StudentException e) {
