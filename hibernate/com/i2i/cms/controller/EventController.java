@@ -30,7 +30,7 @@ public class EventController {
      * </p>
      */
     public void manageEvents() {
-        while(true) {
+        while (true) {
             System.out.println("\n\t----------------------------------------------------------");
             System.out.println("\t                      Manage Events                      ");
             System.out.println("\t----------------------------------------------------------");
@@ -43,7 +43,7 @@ public class EventController {
             System.out.println("\t----------------------------------------------------------");
             System.out.print("\n\tEnter your choice: ");
             int choice = scanner.nextInt();
-            switch(choice) {
+            switch (choice) {
                 case 1:
                     addEventDetails();
                     break;
@@ -76,7 +76,7 @@ public class EventController {
     public void addEventDetails() {
         System.out.println("Enter event name: ");
         String eventName = scanner.next();
-        while(!ValidateInputUtils.isValidString(eventName)) {
+        while (!ValidateInputUtils.isValidString(eventName)) {
             System.out.println("Enter a valid event name : ");
             eventName = scanner.next();
         }
@@ -85,32 +85,32 @@ public class EventController {
         System.out.println("Enter event date (YYYY/MM/DD): ");
         String inputDate = scanner.next();
         Date eventDate = DateUtils.validateDate(inputDate);
-        while(eventDate == null) {
+        while (eventDate == null) {
             System.out.println("Enter a valid date (YYYY/MM/DD): ");
             inputDate = scanner.next();
             eventDate = DateUtils.validateDate(inputDate);
         }
         System.out.println("Enter event incharge: ");
         String eventIncharge = scanner.next();
-        while(!ValidateInputUtils.isValidString(eventIncharge)) {
+        while (!ValidateInputUtils.isValidString(eventIncharge)) {
             System.out.println("Enter a valid incharge name(alphabets only) : ");
             eventIncharge = scanner.next();
         }
         System.out.println("Enter event category: ");
         String eventCategory = scanner.next();
-        while(!ValidateInputUtils.isValidString(eventCategory)) {
+        while (!ValidateInputUtils.isValidString(eventCategory)) {
             System.out.println("Enter a valid event category(alphabets only) : ");
             eventCategory = scanner.next();
         }
         Event event = new Event(eventName, eventVenue, eventDate, eventIncharge, eventCategory);
         try {
             Event insertedEvent = eventService.addEvent(event);
-            if(null != insertedEvent) {
+            if (null != insertedEvent) {
                 System.out.println(insertedEvent);
             } else {
                 System.out.println("Event details not added.");
             }
-        } catch(StudentException e) {
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -124,10 +124,10 @@ public class EventController {
     public void displayAllEvents() {
         try {
             List<Event> events = eventService.getAllEventDetails();
-            if(events.isEmpty()) {
+            if (events.isEmpty()) {
                 System.out.println("No events available.");
             } else {
-                for(Event event : events) {
+                for (Event event : events) {
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.append("\n\tEvent Id            : ").append(event.getEventId())
                         .append("\n\tEvent Name          : ").append(event.getEventName())
@@ -138,7 +138,7 @@ public class EventController {
                     System.out.println(stringBuilder);
                 }
             }
-        } catch(StudentException e) {
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -156,7 +156,7 @@ public class EventController {
             int eventId = scanner.nextInt();
             Event event = eventService.getStudentsInEvent(eventId);
             System.out.println(event);
-        } catch(StudentException e) {
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -177,7 +177,7 @@ public class EventController {
         System.out.println("Enter new event date (YYYY/MM/DD): ");
         String inputEventDate = scanner.next();
         Date eventDate = DateUtils.validateDate(inputEventDate);
-        while(null == eventDate) {
+        while (null == eventDate) {
             System.out.println("Enter a valid date (YYYY/MM/DD): ");
             inputEventDate = scanner.next();
             eventDate = DateUtils.validateDate(inputEventDate);
@@ -190,13 +190,13 @@ public class EventController {
         updatedEvent.setEventId(eventId);
         try {
             boolean isEventUpdated = eventService.updateEventDetails(updatedEvent);
-            if(isEventUpdated) {
+            if (isEventUpdated) {
                 System.out.println("Event details updated successfully.");
                 System.out.println(updatedEvent);
             } else {
                 System.out.println("Failed to update event details.");
             }
-        } catch(StudentException e) {
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -211,12 +211,12 @@ public class EventController {
         System.out.println("Enter event id to remove: ");
         int eventIdToRemove = scanner.nextInt();
         try {
-            if(eventService.removeEventDetails(eventIdToRemove)) {
+            if (eventService.removeEventDetails(eventIdToRemove)) {
                 System.out.println("Event removed successfully.");
             } else {
                 System.out.println("Event not removed");
             }
-        } catch(StudentException e) {
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -239,15 +239,15 @@ public class EventController {
                 System.out.println("Enter event id to participate: ");
                 int eventId = scanner.nextInt();
                 boolean isStudentAddedToEvent = eventService.addStudentToEvent(studentId, eventId);
-                if(isStudentAddedToEvent) {
+                if (isStudentAddedToEvent) {
                     System.out.println("Student added to event successfully.");
                 } else {
                     System.out.println("Failed to add student to event.");
                 }
                 System.out.println("Do you want to participate in another event (Y / N) : ");
                 loop = scanner.next();
-            } while(loop.equalsIgnoreCase("Y"));
-        } catch(StudentException e) {
+            } while (loop.equalsIgnoreCase("Y"));
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -264,12 +264,12 @@ public class EventController {
         int eventId = scanner.nextInt();
         try {
             boolean result = eventService.removeStudentFromEvent(studentId, eventId);
-            if(result) {
+            if (result) {
                 System.out.println("Student removed from event successfully.");
             } else {
                 System.out.println("Failed to remove student from event.");
             }
-        } catch(StudentException e) {
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         }
     }
