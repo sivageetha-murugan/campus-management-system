@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>  
+<!DOCTYPE hibernate-mapping PUBLIC  "-//Hibernate/Hibernate Mapping DTD 5.3//EN"  
+    "http://hibernate.sourceforge.net/hibernate-mapping-5.3.dtd">
+
+<hibernate-mapping>
+    <class name = "com.i2i.cms.models.PersonalDetails" table = "personal_details">
+        <id name = "personalDetailsId" column = "id" type = "int">
+            <generator class = "increment"/>
+        </id>
+        <property name = "fatherName" column = "father_name" type = "string"/>
+        <property name = "motherName" column = "mother_name" type = "string"/>
+        <property name = "phoneNumber" column = "phone_number" type = "string"/>
+        <property name = "city" column = "city" type = "string"/>
+        <property name = "nationality" column = "nationality" type = "string"/>
+    </class>
+</hibernate-mapping>

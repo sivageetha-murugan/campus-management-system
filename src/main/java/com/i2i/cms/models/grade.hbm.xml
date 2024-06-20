@@ -1,0 +1,16 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package = "com.i2i.cms.models">
+    <class name = "com.i2i.cms.models.Grade" table = "grades">
+        <id name = "gradeId" column = "id">
+            <generator class = "increment"/>
+        </id>
+        <property name = "grade" type = "int" column = "grade"/>
+        <property name = "section" type = "string" column = "section"/>
+        <set name = "students" inverse = "true" fetch = "join" lazy = "false">
+            <key column = "grade_id" not-null = "true"/>
+            <one-to-many class = "com.i2i.cms.models.Student"/>
+        </set>
+    </class>
+</hibernate-mapping>
