@@ -107,24 +107,6 @@ public class Student {
             .append("\n\t\tStudent Dob       : ").append(studentDob)
             .append("\n\t\tStudent Marks     : ").append(studentMarks)
             .append("\n\t\tStudent Age       : ").append(DateUtils.calculatePeriodDifference(studentDob));
-        if(null != grade) {
-            stringBuilder.append("\n\t\tGrade              : ").append(grade.getGrade())
-                .append("\n\t\tSection            : ").append(grade.getSection());
-        }
-        if(null != personalDetails) {
-            stringBuilder.append("\n\t\tPersonal Details  : ").append(personalDetails.toString());
-        } 
-        if(!events.isEmpty() || null != events) {
-            for(Event event : events) {
-                stringBuilder.append("\n\t\tEvent Id       : ").append(event.getEventId())
-                    .append("\n\t\tEvent Name     : ").append(event.getEventName())
-                    .append("\n\t\tEvent Venue    : ").append(event.getEventVenue())
-                    .append("\n\t\tEvent Date     : ").append(event.getEventDate())
-                    .append("\n\t\tEvent Incharge : ").append(event.getEventIncharge())
-                    .append("\n\t\tEvent Category : ").append(event.getEventCategory());
-           }
-        }
-
         return stringBuilder.toString();
     }
 }

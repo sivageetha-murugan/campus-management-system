@@ -1,9 +1,11 @@
 package com.i2i.cms.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.i2i.cms.dao.EventDao;
 import com.i2i.cms.models.Event;
+import com.i2i.cms.models.Student;
 
 /*
  * This class is implemented to handle the services to insert, retrieve and delete operations of the event details.
@@ -111,7 +113,7 @@ public class EventService {
      *
      * @return The event details with the list of students in the event.
      */
-    public Event getStudentsInEvent(int eventId) {
+    public Set<Student> getStudentsInEvent(int eventId) {
         return eventDao.retrieveStudentsInEvent(eventId);
     }
 

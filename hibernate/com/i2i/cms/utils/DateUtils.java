@@ -46,7 +46,7 @@ public final class DateUtils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         try { 
             return simpleDateFormat.parse(inputDate);
-        } catch(ParseException e) {
+        } catch (ParseException e) {
             return null;
         }
     }

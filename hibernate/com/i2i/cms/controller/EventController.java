@@ -3,6 +3,7 @@ package com.i2i.cms.controller;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import com.i2i.cms.exception.StudentException;
 import com.i2i.cms.models.Event;
@@ -104,9 +105,9 @@ public class EventController {
         }
         Event event = new Event(eventName, eventVenue, eventDate, eventIncharge, eventCategory);
         try {
-            Event insertedEvent = eventService.addEvent(event);
-            if (null != insertedEvent) {
-                System.out.println(insertedEvent);
+            event = eventService.addEvent(event);
+            if (null != event) {
+                System.out.println(event);
             } else {
                 System.out.println("Event details not added.");
             }
@@ -147,8 +148,10 @@ public class EventController {
             displayAllEvents();
             System.out.println("Enter event id: ");
             int eventId = scanner.nextInt();
-            Event event = eventService.getStudentsInEvent(eventId);
-            System.out.println(event);
+            Set<Student> students = eventService.getStudentsInEvent(eventId);
+            for (Student student : students) {
+                System.out.println(student);
+            }
         } catch (StudentException e) {
             System.out.println(e.getMessage());
         }
@@ -257,7 +260,7 @@ public class EventController {
         int eventId = scanner.nextInt();
         try {
             boolean result = eventService.removeStudentFromEvent(studentId, eventId);
-            if (result) {
+            if (!result) {
                 System.out.println("Student removed from event successfully.");
             } else {
                 System.out.println("Failed to remove student from event.");

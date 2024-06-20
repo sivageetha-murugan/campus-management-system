@@ -89,7 +89,7 @@ public class PersonalDetails {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\n\t\tPersonal ID       : ").append(personalDetailsId)
+        stringBuilder.append("\t\tPersonal ID       : ").append(personalDetailsId)
           .append("\n\t\tFather Name       : ").append(fatherName)
           .append("\n\t\tMother Name       : ").append(motherName)
           .append("\n\t\tPhone Number      : ").append(phoneNumber)

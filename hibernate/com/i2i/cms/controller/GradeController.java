@@ -29,7 +29,7 @@ public class GradeController {
     public void displayStudentsByGrade() {
         System.out.println("Enter grade : ");
         int gradeLevel = scanner.nextInt();
-        while(!ValidateInputUtils.isValidGrade(gradeLevel)) {
+        while (!ValidateInputUtils.isValidGrade(gradeLevel)) {
             System.out.println("Enter a valid grade(1 - 12) : ");
             gradeLevel = scanner.nextInt();
         }
@@ -40,10 +40,10 @@ public class GradeController {
         grade.setSection(section);
         try {
             Set<Student> students = gradeService.getStudentsByGrade(grade);
-            for(Student student : students) {
+            for (Student student : students) {
                 System.out.println(student);
             }
-        } catch(StudentException e) {
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         } 
     }

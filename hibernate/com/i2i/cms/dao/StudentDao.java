@@ -39,13 +39,13 @@ public class StudentDao {
      */
     public Student insertStudentDetails(Student student) {
         Transaction transaction = null;
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.save(student);
             transaction.commit();
             return student;
-        } catch(Exception e) {
-            if(null != transaction) {
+        } catch (Exception e) {
+            if (null != transaction) {
                 transaction.rollback();
             }
             throw new StudentException("Unable to insert the student details of student " + student.getStudentName(), e);
@@ -66,10 +66,10 @@ public class StudentDao {
      * @throws Student exception when the given student id can not be accessed.
      */
     public Student retrieveDetailsById(int studentId) {
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             Student student = session.get(Student.class, studentId);
             return student;
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new StudentException("Unable to retrieve the details of student " + studentId, e);
         }
     }
@@ -83,14 +83,14 @@ public class StudentDao {
      *
      * @return The list of all student details.
      *
-     * @throws Student exception when there is no student details entrolled or can not access student details.
+     * @throws Student exception when the student details can not be accessed.
      */
     public List<Student> retrieveAllStudentDetails() {
         List<Student> students = new ArrayList<>();
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             students = session.createQuery("from Student", Student.class).list();
-        } catch(Exception e) {
-            return students;
+        } catch (Exception e) {
+            throw new StudentException("Unable to access student details", e);
         }
         return students;
     }
@@ -110,16 +110,16 @@ public class StudentDao {
      */
     public boolean deleteStudentById(int studentId) {
         Transaction transaction = null;
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             Student student = session.get(Student.class, studentId);
-            if(student != null) {
+            if (student != null) {
                 session.delete(student);
                 transaction.commit();
                 return true;
             }
-        } catch(Exception e) {
-            if(null != transaction) {
+        } catch (Exception e) {
+            if (null != transaction) {
                 transaction.rollback();
             }
             throw new StudentException("Unable to delete the student details of id " + studentId, e);
@@ -149,13 +149,13 @@ public class StudentDao {
      */
     public boolean updateStudentDetails(Student student) {
          Transaction transaction = null;
-         try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+         try (Session session = HibernateConnection.getSessionFactory().openSession()) {
              transaction = session.beginTransaction();
              session.update(student);
              transaction.commit();
              return true;
-         } catch(Exception e) {
-             if(null != transaction) {
+         } catch (Exception e) {
+             if (null != transaction) {
                  transaction.rollback();
              }
              throw new StudentException("Unable to update the details of student " + student.getStudentId(), e);

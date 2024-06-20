@@ -45,8 +45,8 @@ public class StudentService {
      * @return The newly added student details, or null if the addition failed.
      */
     public Student addStudent(String name, Date dob, int marks, int gradeLevel, PersonalDetails personalDetails) {
-       Grade grade = gradeService.addGrade(gradeLevel);
-       if(null != grade) {
+       Grade grade = gradeService.addOrRetrieveGrade(gradeLevel);
+       if (null != grade) {
             Student student = new Student(name, dob, marks, grade);
             student.setPersonalDetails(personalDetails);
             student.setGrade(grade);

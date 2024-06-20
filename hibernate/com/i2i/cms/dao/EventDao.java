@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -43,12 +44,12 @@ public class EventDao {
      */
     public Event insertEventDetails(Event event) {
         Transaction transaction = null;
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.save(event);
             transaction.commit();    
-        } catch(Exception e) {
-            if(null != transaction) {
+        } catch (Exception e) {
+            if (null != transaction) {
                 transaction.rollback();
             }
             throw new StudentException("Unable to insert event: " + event.getEventName(), e);
@@ -75,22 +76,17 @@ public class EventDao {
      * @throws StudentException when the event details can not be retrieved. 
      */
     public boolean isEventExist(Event event) {
-        Transaction transaction = null;
         boolean isEventExist = false;
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             String hql = "from Event e where e.eventName = :eventName";
             Query query = session.createQuery(hql, Event.class);
             query.setParameter("eventName", event.getEventName());
             Event existingEvent = (Event) query.uniqueResult();
-            if(null != existingEvent) {
+            if (null != existingEvent) {
                 isEventExist = true;
             }
             transaction.commit();
-        } catch(Exception e) {
-            if(null != transaction) {
-                transaction.rollback();
-            }
+        } catch (Exception e) {
             throw new StudentException("Cannot access event details of event: " + event.getEventName(), e);
         }
         return isEventExist;
@@ -102,13 +98,15 @@ public class EventDao {
      * </p>
      *
      * @return List of all the event details. 
+     *
+     * @throws StudentException when the event details can not be accessed.
      */
     public List<Event> retrieveAllEventDetails() {
         List<Event> events = new ArrayList<>();
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             events = session.createQuery("from Event", Event.class).list();
-        } catch(Exception e) {
-            return events;
+        } catch (Exception e) {
+            throw new StudentException("Unable to access event details ", e);
         }
         return events;
     }
@@ -133,13 +131,13 @@ public class EventDao {
      */
     public boolean updateEventDetails(Event event) {
         Transaction transaction = null;
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.update(event);
             transaction.commit();
             return true;
-        } catch(Exception e) {
-            if(null != transaction) {
+        } catch (Exception e) {
+            if (null != transaction) {
                 transaction.rollback();
             }
             throw new StudentException("Unable to update event: " + event.getEventId(), e);
@@ -162,22 +160,29 @@ public class EventDao {
     public boolean deleteEventById(int eventId) {
         Transaction transaction = null;
         boolean isEventDeleted = false;
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             Event event = session.get(Event.class, eventId);
-            if(event != null) {
+            if (event != null) {
+                Set<Student> students = event.getStudents();
+                for (Student student : students) {
+                    student.getEvents().remove(event);
+                    session.update(student);
+                }
                 session.delete(event);
                 isEventDeleted = true;
-                transaction.commit();
             }
-        } catch(Exception e) {
-            if(null != transaction) {
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
                 transaction.rollback();
             }
             throw new StudentException("Unable to delete event with ID: " + eventId, e);
         }
         return isEventDeleted;
     }
+
+
 
     /**
      * <p>
@@ -192,14 +197,18 @@ public class EventDao {
      *
      * @throws StudentException If the event id can not be accessed.
      */
-    public Event retrieveStudentsInEvent(int eventId) {
-        Event event = new Event();
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
-            event = session.get(Event.class, eventId);
-        } catch(Exception e) {
+    public Set<Student> retrieveStudentsInEvent(int eventId) {
+        Set<Student> students = new HashSet<>();
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
+            Event event = session.get(Event.class, eventId);
+            if (event != null) {
+                Hibernate.initialize(event.getStudents());
+                students = event.getStudents();
+            }
+        } catch (Exception e) {
             throw new StudentException("Error while retrieving the details of the students in a particular event " + eventId, e);
         }
-        return event;
+        return students;
     }
 
     /**
@@ -221,7 +230,7 @@ public class EventDao {
     public boolean deleteStudentFromEvent(int studentId, int eventId) {
         Transaction transaction = null;
         boolean isStudentDeletedFromEvent = false;
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             Event event = session.get(Event.class, eventId);
             Student student = session.get(Student.class, studentId);
@@ -230,8 +239,8 @@ public class EventDao {
             student.setEvents(events);
             session.update(student);
             transaction.commit();
-        } catch(Exception e) {
-            if(null != transaction) {
+        } catch (Exception e) {
+            if (null != transaction) {
                 transaction.rollback();
             }
             throw new StudentException("Error occurred while deleting the student " + studentId + " from event " + eventId, e);
@@ -258,18 +267,18 @@ public class EventDao {
     public boolean insertStudentToEvent(int studentId, int eventId) {
         Transaction transaction = null;
         boolean isStudentAddedToEvent = false;
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             Event event = session.get(Event.class, eventId);
             Student student = session.get(Student.class, studentId);
-            if(null != student && null != event) {
+            if (null != student && null != event) {
                 event.addStudent(student);
                 isStudentAddedToEvent = true;
             }
             session.update(event);
             transaction.commit();
-        } catch(Exception e) {
-            if(null != transaction) {
+        } catch (Exception e) {
+            if (null != transaction) {
                 transaction.rollback();
             }
             throw new StudentException("Error occurred while adding the student " + studentId + " to the event " + eventId, e);

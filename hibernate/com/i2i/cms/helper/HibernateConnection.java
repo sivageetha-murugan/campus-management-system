@@ -16,7 +16,7 @@ public class HibernateConnection {
     private static SessionFactory buildSessionFactory() {
         try {
             return new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-        } catch(Throwable e) {
+        } catch (Throwable e) {
             System.err.println("Initial SessionFactory creation failed." + e);
             throw new ExceptionInInitializerError(e);
         }
@@ -31,10 +31,5 @@ public class HibernateConnection {
         getSessionFactory().close();
     }
 
-    public static void closeSession(Session session) {
-        if(null != session) {
-            session.close();
-        }
-    }
 
 }

@@ -107,27 +107,7 @@ public class Event {
             .append("\n\tEvent venue    : ").append(eventVenue)
             .append("\n\tEvent date     : ").append(eventDate)
             .append("\n\tEvent incharge : ").append(eventIncharge)
-            .append("\n\tEvent category : ").append(eventCategory)
-            .append("\n\tStudents       : ");
-        if(!students.isEmpty()) {
-            for(Student student : students) {
-                stringBuilder.append("\n\n\t\tStudent ID        : ").append(student.getStudentId())
-                    .append("\n\t\tStudent Name      : ").append(student.getStudentName())
-                    .append("\n\t\tStudent Dob       : ").append(student.getStudentDob())
-                    .append("\n\t\tStudent Marks     : ").append(student.getStudentMarks())
-                    .append("\n\t\tStudent Age       : ").append(DateUtils.calculatePeriodDifference(student.getStudentDob()));
-                Grade grade = student.getGrade();
-                if(null != grade) {
-                    stringBuilder.append("\n\t\tStudent Grade     : ").append(grade.getGrade())
-                        .append("\n\t\tStudent Section   : ").append(grade.getSection());
-                } else {
-                    stringBuilder.append("\n\t\tStudent Grade     : N/A").append("\n\t\tStudent Section   : N/A");
-                }
-            }
-        } else {
-            stringBuilder.append("\n\tStudent Details     : N/A");
-        }
-
+            .append("\n\tEvent category : ").append(eventCategory);
         return stringBuilder.toString();
     }
 }

@@ -37,13 +37,13 @@ public class GradeDao {
      */
     public Grade insertGrade(Grade grade) {
         Transaction transaction = null;
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.save(grade);
             transaction.commit();
             return grade;
-        } catch(Exception e) {
-            if(null != transaction) {
+        } catch (Exception e) {
+            if (null != transaction) {
                 transaction.rollback();
             }
             throw new StudentException("Unable to insert grade " + grade.getGrade() + " and section " + grade.getSection(), e);
@@ -65,16 +65,11 @@ public class GradeDao {
      * @throws Student exception when the grade id can not be accessed.
      */
     public long countStudentsInSection(int gradeId) {
-        Transaction transaction = null;
         long count = 0;
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             String hql = "SELECT COUNT(s) FROM Student s WHERE s.grade.gradeId = :gradeId";
             count = (long) session.createQuery(hql).setParameter("gradeId", gradeId).uniqueResult();
-        } catch(Exception e) {
-            if(null != transaction) {
-                transaction.rollback();
-            }
+        } catch (Exception e) {
             throw new StudentException("Error occured while counting the students in grade id " + gradeId, e);
         }
         return count;
@@ -95,12 +90,12 @@ public class GradeDao {
      */
     public List<Grade> retrieveSectionsByGrade(int gradeLevel) {
         List<Grade> grades = new ArrayList<>();
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             String hql = "from Grade g where g.grade = :grade";
             Query query = session.createQuery(hql, Grade.class);
             query.setParameter("grade", gradeLevel);
             grades = query.list();
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new StudentException("Error occured while retrieving the sections of grade " + gradeLevel, e);
         }       
         return grades;
@@ -122,15 +117,15 @@ public class GradeDao {
     public boolean isGradeAvailable(int gradeLevel) {
         boolean isGradeExist = false;
         List<Grade> grades = new ArrayList<>();
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             String hql = "from Grade g where g.grade = :grade";
             Query query = session.createQuery(hql, Grade.class);
             query.setParameter("grade", gradeLevel);
             grades = query.getResultList();
-            if(!grades.isEmpty()) {
+            if (!grades.isEmpty()) {
                 isGradeExist = true;
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new StudentException("Unabe to check the availability of the grade " + gradeLevel , e);
         }
         return isGradeExist;
@@ -152,14 +147,14 @@ public class GradeDao {
      */
     public Set<Student> retrieveStudentsByGrade(Grade grade) {
         Set<Student> students = new HashSet<>();
-        try(Session session = HibernateConnection.getSessionFactory().openSession()) {
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             String hql = "from Grade g where g.grade = :grade and g.section = :section";
             Query<Grade> query = session.createQuery(hql, Grade.class);
             query.setParameter("grade", grade.getGrade());
             query.setParameter("section", grade.getSection());
             grade = query.uniqueResult();
             students = grade.getStudents();
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new StudentException("Unable to retrieve students in grade " + grade.getGrade() + " and section " + grade.getSection(), e);
         }
         return students;

@@ -71,16 +71,9 @@ public class Grade {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Grade             : ").append(grade)
-            .append("\nSection           : ").append(section)
+        stringBuilder.append("\t\tGrade             : ").append(grade)
+            .append("\n\t\tSection           : ").append(section)
             .append("\n\t\tStudents          : ");
-        for(Student student : students) {
-            stringBuilder.append("\n\n\t\tStudent ID        : ").append(student.getStudentId())
-                .append("\n\t\tStudent Name      : ").append(student.getStudentName())
-                .append("\n\t\tStudent Dob       : ").append(student.getStudentDob())
-                .append("\n\t\tStudent Marks     : ").append(student.getStudentMarks())
-                .append("\n\t\tStudent Age       : ").append(DateUtils.calculatePeriodDifference(student.getStudentDob()));
-        }
         return stringBuilder.toString();
     }
 }

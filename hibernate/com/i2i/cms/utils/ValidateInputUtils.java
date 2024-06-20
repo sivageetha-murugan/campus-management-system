@@ -19,7 +19,7 @@ public final class ValidateInputUtils {
      */
 
     public static boolean isValidGrade(int grade) {
-        if(grade < 13 && grade >0) {
+        if (grade < 13 && grade >0) {
             return true;
         }
         return false;
@@ -39,7 +39,7 @@ public final class ValidateInputUtils {
 
     public static boolean isValidString(String string) {
         String regex = "^[a-zA-Z]+$";
-        if(string.matches(regex) && (!string.isEmpty())) { 
+        if (string.matches(regex) && (!string.isEmpty())) { 
             return true;
         } else {
             return false; 
@@ -47,7 +47,7 @@ public final class ValidateInputUtils {
     }
 
     public static boolean isValidPhoneNumber(String phoneNumber) {
-        if(phoneNumber.length() != 10) {
+        if (phoneNumber.length() != 10) {
             return false;
         }
         for (int i = 0; i < phoneNumber.length(); i++) {

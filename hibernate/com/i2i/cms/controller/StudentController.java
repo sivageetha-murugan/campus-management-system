@@ -25,8 +25,8 @@ public class StudentController {
 
     /**
      * <p>
-     * This method gets student details such as student name, dob, marks, grade, father name, mother name, phone number, 
-     * city and nationality as the input from the user.
+     * This method gets student details such as student name, dob, marks, grade, father name, mother name, 
+     * phone number, city and nationality as the input from the user.
      * Stores the input from the user and display the stored details with generated student id and section.
      * </p>
      */
@@ -34,14 +34,14 @@ public class StudentController {
         try {
             System.out.println("Enter student name: ");
             String name = scanner.next();
-            while(!ValidateInputUtils.isValidString(name)) {
+            while (!ValidateInputUtils.isValidString(name)) {
                 System.out.println("Enter a valid name : ");
                 name = scanner.next();
             }
             System.out.println("Enter student date of birth (YYYY/MM/DD): ");
             String dob = scanner.next();
             Date dateOfBirth = DateUtils.validateDate(dob);
-            while(null == dateOfBirth) {
+            while (null == dateOfBirth) {
                 System.out.println("Enter a valid date (YYYY/MM/DD): ");
                 dob = scanner.next();
                 dateOfBirth = DateUtils.validateDate(dob);
@@ -50,44 +50,46 @@ public class StudentController {
             int marks = scanner.nextInt();
             System.out.println("Enter student grade: ");
             int gradeLevel = scanner.nextInt();
-            while(!ValidateInputUtils.isValidGrade(gradeLevel)) {
+            while (!ValidateInputUtils.isValidGrade(gradeLevel)) {
                 System.out.println("Enter a valid grade(1-12) : ");
                 gradeLevel = scanner.nextInt();
             }
             System.out.println("Enter Student's Father Name : ");
             String fatherName = scanner.next();
-            while(!ValidateInputUtils.isValidString(fatherName)) {
+            while (!ValidateInputUtils.isValidString(fatherName)) {
                 System.out.println("Enter a valid name : ");
                 fatherName = scanner.next();
             }
             System.out.println("Enter Student's Mother Name : ");
             String motherName = scanner.next();
-            while(!ValidateInputUtils.isValidString(motherName)) {
+            while (!ValidateInputUtils.isValidString(motherName)) {
                 System.out.println("Enter a valid name : ");
                 motherName = scanner.next();
             }
             System.out.println("Enter Contact No : ");
             String phoneNumber = scanner.next();
-            while(!ValidateInputUtils.isValidPhoneNumber(phoneNumber)) {
+            while (!ValidateInputUtils.isValidPhoneNumber(phoneNumber)) {
                 System.out.println("Enter a valid phone number : ");
                 phoneNumber = scanner.next();
             }
             System.out.println("Enter City : ");
             String city = scanner.next();
-            while(!ValidateInputUtils.isValidString(city)) {
+            while (!ValidateInputUtils.isValidString(city)) {
                 System.out.println("Enter a valid city name(only characters) : ");
                 city = scanner.next();
             }
             System.out.println("Enter Nationality : ");
             String nationality = scanner.next();
-            while(!ValidateInputUtils.isValidString(nationality)) {
+            while (!ValidateInputUtils.isValidString(nationality)) {
                 System.out.println("Enter a valid string for nationality  : ");
                 nationality = scanner.next();
             }
             PersonalDetails personalDetails = new PersonalDetails(fatherName, motherName, phoneNumber, city, nationality);
             Student student = studentService.addStudent(name, dateOfBirth, marks, gradeLevel, personalDetails);
             System.out.println(student);
-        } catch(StudentException e) {
+            System.out.println(student.getGrade());
+            System.out.println(student.getPersonalDetails());
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -103,12 +105,12 @@ public class StudentController {
         int studentId = scanner.nextInt();
         try {
             Student student = studentService.getStudentById(studentId);
-            if(null != student) {
+            if (null != student) {
                 System.out.println(student);
             } else {
                 System.out.println("Student not found with ID: " + studentId);
             }
-        } catch(StudentException e) {
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         }  
     }
@@ -121,14 +123,16 @@ public class StudentController {
     public void displayAllStudents() {
         try {
             List<Student> students = studentService.getAllStudents();
-            if(!students.isEmpty()) {
-                for(Student student : students) {
+            if (!students.isEmpty()) {
+                for (Student student : students) {
                     System.out.println(student);
+                    System.out.println(student.getGrade());
+                    System.out.println(student.getPersonalDetails());
                 }
             } else {
                 System.out.println("No students found.");
             }
-        } catch(StudentException e) {
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -143,12 +147,12 @@ public class StudentController {
         int studentId = scanner.nextInt();
         try {
             boolean isDeleted = studentService.deleteStudentById(studentId);
-            if(isDeleted) {
+            if (isDeleted) {
                 System.out.println("Student deleted successfully.");
             } else {
                 System.out.println("Student not found with ID: " + studentId);
             }
-        } catch(StudentException e) {
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -163,20 +167,20 @@ public class StudentController {
         int studentId = scanner.nextInt();
         try {
             Student existingStudent = studentService.getStudentById(studentId);
-            if(null == existingStudent) {
+            if (null == existingStudent) {
                 System.out.println("Student not found with ID: " + studentId);
                 return;
             }
             System.out.println("Enter new student name (or press n to keep the current): ");
             String name = scanner.next();
-            if(!name.equalsIgnoreCase("n")) {
+            if (!name.equalsIgnoreCase("n")) {
                 existingStudent.setStudentName(name);
             }
             System.out.println("Enter new student date of birth (DD/MM/YYYY) (or press n to keep the current): ");
             String dob = scanner.next();
-            if(!dob.equalsIgnoreCase("n")) {
+            if (!dob.equalsIgnoreCase("n")) {
                 Date dateOfBirth = DateUtils.validateDate(dob);
-                while(null == dateOfBirth) {
+                while (null == dateOfBirth) {
                     System.out.println("Enter a valid date (YYYY/MM/DD): ");
                     dob = scanner.next();
                     dateOfBirth = DateUtils.validateDate(dob);
@@ -185,46 +189,46 @@ public class StudentController {
             }
             System.out.println("Enter new student marks (or press 1 to keep the current): ");
             int marks = scanner.nextInt();
-            if(marks != 1) {
+            if (marks != 1) {
                 existingStudent.setStudentMarks(marks);
             }
             PersonalDetails personalDetails = existingStudent.getPersonalDetails();
             System.out.println("Enter new father's name (or press n to keep the current): ");
             String fatherName = scanner.next();
-            if(!fatherName.equalsIgnoreCase("n")) {
+            if (!fatherName.equalsIgnoreCase("n")) {
                 personalDetails.setFatherName(fatherName);
             }
             System.out.println("Enter new mother's name (or press n to keep the current): ");
             String motherName = scanner.next();
-            if(!motherName.equalsIgnoreCase("n")) {
+            if (!motherName.equalsIgnoreCase("n")) {
                 personalDetails.setMotherName(motherName);
             }
             System.out.println("Enter new phone number (or press n to keep the current): ");
             String phoneNumber = scanner.next();
-            if(!phoneNumber.equalsIgnoreCase("n")) {
+            if (!phoneNumber.equalsIgnoreCase("n")) {
                 personalDetails.setPhoneNumber(phoneNumber);
             }
 
             System.out.println("Enter new city (or press n to keep the current): ");
             String city = scanner.next();
-            if(!city.equalsIgnoreCase("n")) {
+            if (!city.equalsIgnoreCase("n")) {
                 personalDetails.setCity(city);
             }
 
             System.out.println("Enter new nationality (or press n to keep the current): ");
             String nationality = scanner.next();
-            if(!nationality.equalsIgnoreCase("n")) {
+            if (!nationality.equalsIgnoreCase("n")) {
                 personalDetails.setNationality(nationality);
             }
 
             existingStudent.setPersonalDetails(personalDetails);
             boolean isUpdated = studentService.updateStudent(existingStudent);
-            if(isUpdated) {
+            if (isUpdated) {
                 System.out.println("Student updated successfully.");
             } else {
                 System.out.println("Failed to update student.");
             }
-        } catch(StudentException e) {
+        } catch (StudentException e) {
             System.out.println(e.getMessage());
         }
     }

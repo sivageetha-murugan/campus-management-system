@@ -45,7 +45,7 @@ public class Main {
             System.out.println("\t\t4. Display All Student details");
             System.out.println("\t\t5. Display Students by Grade and Section");
             System.out.println("\t\t6. Remove Student Details");
-            System.out.println("\t\t7. Add or Edit Event Details");
+            System.out.println("\t\t7. Manage Events");
             System.out.println("\t\t8. Participate in Events");
             System.out.println("\t\t9. Remove Student From an Event");
             System.out.println("\t\t10. Exit");

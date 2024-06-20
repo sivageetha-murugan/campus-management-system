@@ -31,15 +31,15 @@ public class GradeService {
      *
      * @return Grade with the details of the grade, section and grade id.
      */
-    public Grade addGrade(int gradeLevel) {
+    public Grade addOrRetrieveGrade(int gradeLevel) {
         List<Grade> sections = new ArrayList<>();
-        if(gradeDao.isGradeAvailable(gradeLevel)) {
+        if (gradeDao.isGradeAvailable(gradeLevel)) {
             sections = gradeDao.retrieveSectionsByGrade(gradeLevel);
         }
         int maxStudents = 2;
-        for(Grade grade : sections) {
+        for (Grade grade : sections) {
             long studentCount = gradeDao.countStudentsInSection(grade.getGradeId());
-            if(studentCount < maxStudents) {
+            if (studentCount < maxStudents) {
                 return grade;
             }
         }
