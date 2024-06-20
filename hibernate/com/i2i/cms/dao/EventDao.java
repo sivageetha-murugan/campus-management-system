@@ -85,7 +85,6 @@ public class EventDao {
             if (null != existingEvent) {
                 isEventExist = true;
             }
-            transaction.commit();
         } catch (Exception e) {
             throw new StudentException("Cannot access event details of event: " + event.getEventName(), e);
         }
