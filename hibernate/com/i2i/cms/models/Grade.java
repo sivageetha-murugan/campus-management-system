@@ -72,8 +72,7 @@ public class Grade {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\t\tGrade             : ").append(grade)
-            .append("\n\t\tSection           : ").append(section)
-            .append("\n\t\tStudents          : ");
+            .append("\n\t\tSection           : ").append(section);
         return stringBuilder.toString();
     }
 }
