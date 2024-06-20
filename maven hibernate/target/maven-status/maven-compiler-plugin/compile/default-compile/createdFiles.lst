@@ -1,6 +1,0 @@
-com\i2i\cms\service\DepartmentService.class
-com\i2i\cms\controller\DepartmentController.class
-com\i2i\cms\exception\DepartmentException.class
-com\i2i\cms\dao\DepartmentDao.class
-com\i2i\cms\helper\HibernateConnection.class
-com\i2i\cms\model\Department.class
