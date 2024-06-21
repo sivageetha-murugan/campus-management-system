@@ -160,6 +160,15 @@ public class GradeDao {
         return students;
     }
 
+    /*
+     * <p>
+     * This method retrieves all the students in each grade.
+     * </p>
+     *
+     * @return List of grades along with its students.
+     *
+     * @throws Student exception when the grade and section can not be accessed.
+     */
     public List<Grade> retrieveAllGradeDetails() {
         List<Grade> grades = new ArrayList<>();
         try (Session session = HibernateConnection.getSessionFactory().openSession()) {

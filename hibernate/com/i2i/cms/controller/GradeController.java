@@ -52,6 +52,11 @@ public class GradeController {
         } 
     }
 
+    /**
+     * <p>
+     * This method displays all the grades that are exist along with it student details.
+     * </p>
+     */
     public void displayAllGradesWithStudents() {
         try {
             List<Grade> grades = gradeService.getAllGradeDetails();

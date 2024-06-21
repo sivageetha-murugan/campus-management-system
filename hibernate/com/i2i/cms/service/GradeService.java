@@ -66,6 +66,13 @@ public class GradeService {
         return gradeDao.retrieveStudentsByGrade(grade);
     }
 
+    /*
+     * <p>
+     * This method gets all the students each grade and section.
+     * </p>
+     *
+     * @return The list of all grades and it students.
+     */
     public List<Grade> getAllGradeDetails() {
         return gradeDao.retrieveAllGradeDetails();
     }
