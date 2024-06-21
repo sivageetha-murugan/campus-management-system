@@ -102,7 +102,7 @@ public class Student {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\n\n\t\tStudent ID        : ").append(studentId)
+        stringBuilder.append("\n\t\tStudent ID        : ").append(studentId)
             .append("\n\t\tStudent Name      : ").append(studentName)
             .append("\n\t\tStudent Dob       : ").append(studentDob)
             .append("\n\t\tStudent Marks     : ").append(studentMarks)

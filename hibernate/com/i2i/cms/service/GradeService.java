@@ -66,4 +66,8 @@ public class GradeService {
         return gradeDao.retrieveStudentsByGrade(grade);
     }
 
+    public List<Grade> getAllGradeDetails() {
+        return gradeDao.retrieveAllGradeDetails();
+    }
+
 }

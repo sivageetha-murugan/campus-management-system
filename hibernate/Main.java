@@ -48,7 +48,8 @@ public class Main {
             System.out.println("\t\t7. Manage Events");
             System.out.println("\t\t8. Participate in Events");
             System.out.println("\t\t9. Remove Student From an Event");
-            System.out.println("\t\t10. Exit");
+            System.out.println("\t\t10. Display all grades");
+            System.out.println("\t\t11. Exit");
             System.out.println("\n\t----------------------------------------------------------\n");
             System.out.print("\n\tEnter your choice: ");
             int choice = scanner.nextInt();
@@ -81,6 +82,9 @@ public class Main {
                     eventController.removeStudentFromEvent();
                     break;
                 case 10:
+                    gradeController.displayAllGradesWithStudents();
+                    break;
+                case 11:
                     System.out.println("Exiting...");
                     System.exit(0);
                 default:

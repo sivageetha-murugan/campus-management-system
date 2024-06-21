@@ -160,4 +160,14 @@ public class GradeDao {
         return students;
     }
 
+    public List<Grade> retrieveAllGradeDetails() {
+        List<Grade> grades = new ArrayList<>();
+        try (Session session = HibernateConnection.getSessionFactory().openSession()) {
+            grades = session.createQuery("from Grade", Grade.class).list();
+        } catch (Exception e) {
+            throw new StudentException("Unable to retrieve grades ", e);
+        }
+        return grades;
+    }
+
 }

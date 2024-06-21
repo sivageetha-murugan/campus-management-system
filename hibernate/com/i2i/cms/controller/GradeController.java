@@ -40,12 +40,40 @@ public class GradeController {
         grade.setSection(section);
         try {
             Set<Student> students = gradeService.getStudentsByGrade(grade);
+            if (students.isEmpty()) {
+                System.out.println("\t\tNo students in this section");
+                return;
+            }
             for (Student student : students) {
                 System.out.println(student);
             }
         } catch (StudentException e) {
             System.out.println(e.getMessage());
         } 
+    }
+
+    public void displayAllGradesWithStudents() {
+        try {
+            List<Grade> grades = gradeService.getAllGradeDetails();
+            if (grades.isEmpty()) {
+                System.out.println("No grades entrolled");
+                return;
+            }
+            for (Grade grade : grades) {
+                System.out.println("\n\tGrade   : " + grade.getGrade());
+                System.out.println("\tSection : " + grade.getSection());
+                if (grade.getStudents().isEmpty()) {
+                    System.out.println("\t\tNo Students in this section");
+                } else {
+                    for (Student student : grade.getStudents()) {
+                        System.out.println(student);
+                    }
+                }
+                System.out.println("\n");
+            }
+        } catch (StudentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }
