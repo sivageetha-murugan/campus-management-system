@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.i2i.cms.dao.EventDao;
-import com.i2i.cms.exception.StudentException;
 import com.i2i.cms.models.Event;
 import com.i2i.cms.models.Student;
 

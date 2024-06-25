@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.i2i.cms.exception.StudentException;
 import com.i2i.cms.models.Event;
 import com.i2i.cms.models.Student;
@@ -22,6 +25,7 @@ import com.i2i.cms.utils.ValidateInputUtils;
 
 public class EventController {
 
+    private static final Logger logger = LoggerFactory.getLogger(EventController.class);
     private EventService eventService = new EventService();
     private Scanner scanner = new Scanner(System.in);
 
@@ -34,6 +38,7 @@ public class EventController {
      */
     public void manageEvents() {
         while (true) {
+            logger.info("Managing events");
             System.out.println("\n\t----------------------------------------------------------");
             System.out.println("\t                      Manage Events                      ");
             System.out.println("\t----------------------------------------------------------");
@@ -63,6 +68,7 @@ public class EventController {
                     removeEventDetails();
                     break;
                 case 6:
+                    logger.info("Exiting from managing events");
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -80,6 +86,7 @@ public class EventController {
         System.out.println("Enter event name: ");
         scanner.nextLine();
         String eventName = scanner.nextLine();
+        logger.info("Adding event details of event {}", eventName);
         while (!ValidateInputUtils.isValidString(eventName)) {
             System.out.println("Enter a valid event name : ");
             eventName = scanner.nextLine();
@@ -111,11 +118,13 @@ public class EventController {
             event = eventService.addEvent(event);
             if (null != event) {
                 System.out.println(event);
+                logger.info("Inserted the details successfully for event {}", event.getEventName());
             } else {
                 System.out.println("Event details not added.");
+                logger.warn("Event details not inserted for event {}", eventName);
             }
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -126,17 +135,20 @@ public class EventController {
      * </p>
      */
     public void displayAllEvents() {
+        logger.info("Displaying all event details");
         try {
             List<Event> events = eventService.getAllEventDetails();
             if (events.isEmpty()) {
                 System.out.println("No events available.");
+                logger.warn("No events available");
             } else {
                 for (Event event : events) {
                     System.out.println(event);
                 }
+                logger.info("Displayed all event details");
             }
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -151,16 +163,19 @@ public class EventController {
             displayAllEvents();
             System.out.println("Enter event id: ");
             int eventId = scanner.nextInt();
+            logger.info("Displaying students in a particular event of event id {}", eventId);
             Set<Student> students = eventService.getStudentsInEvent(eventId);
             if (students.isEmpty()) {
-                System.out.println("No students entrolled...");
+                System.out.println("No students enrolled");
+                logger.warn("No students enrolled in event id {}", eventId);
                 return;
             }
             for (Student student : students) {
                 System.out.println(student);
             }
+            logger.info("Displayed students in a particular event id {}", eventId);
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -173,65 +188,68 @@ public class EventController {
     public void updateEventDetails() {
         System.out.println("Enter event id to update: ");
         int eventId = scanner.nextInt();
+        logger.info("Updating event details of id {}", eventId);
         scanner.nextLine();
-        Event existingEvent = eventService.getEventDetailsById(eventId);
-        if (null == existingEvent) {
-            System.out.println("Event does not exist");
-            return;
-        }
-        System.out.println("Enter new event name (or press n to keep the current): ");
-        String eventName = scanner.nextLine();
-        if (!eventName.equalsIgnoreCase("n")) {
-            while (!ValidateInputUtils.isValidString(eventName)) {
-                System.out.println("Enter a valid event name : ");
-                eventName = scanner.nextLine();
-            }
-            existingEvent.setEventName(eventName);
-        }
-        System.out.println("Enter new event venue (or press n to keep the current): ");
-        String eventVenue = scanner.nextLine();
-        if (!eventVenue.equalsIgnoreCase("n")) {
-            existingEvent.setEventVenue(eventVenue);
-        }
-        System.out.println("Enter new event date (YYYY/MM/DD) or press n to keep the current: ");
-        String inputEventDate = scanner.nextLine();
-        if (!inputEventDate.equalsIgnoreCase("n")) {
-            Date eventDate = DateUtils.validateDate(inputEventDate);
-            while (null == eventDate) {
-                System.out.println("Enter a valid date (YYYY/MM/DD): ");
-                inputEventDate = scanner.nextLine();
-                eventDate = DateUtils.validateDate(inputEventDate);
-            }
-            existingEvent.setEventDate(eventDate);
-        }
-        System.out.println("Enter new event inc-harge or press n to keep the current: ");
-        String eventIncharge = scanner.nextLine();
-        if (!eventIncharge.equalsIgnoreCase("n")) {
-            while (!ValidateInputUtils.isValidString(eventIncharge)) {
-                System.out.println("Enter a valid incharge name(alphabets only) : ");
-                eventIncharge = scanner.nextLine();
-            }
-            existingEvent.setEventIncharge(eventIncharge);
-        }
-        System.out.println("Enter new event category or press n to keep the current: ");
-        String eventCategory = scanner.nextLine();
-        if(!eventCategory.equalsIgnoreCase("n")) {
-            while (!ValidateInputUtils.isValidString(eventCategory)) {
-                System.out.println("Enter a valid event category(alphabets only) : ");
-                eventCategory = scanner.nextLine();
-            }
-            existingEvent.setEventCategory(eventCategory);
-        }
         try {
+            Event existingEvent = eventService.getEventDetailsById(eventId);
+            if (null == existingEvent) {
+                System.out.println("Event does not exist");
+                return;
+            }
+            System.out.println("Enter new event name (or press n to keep the current): ");
+            String eventName = scanner.nextLine();
+            if (!eventName.equalsIgnoreCase("n")) {
+                while (!ValidateInputUtils.isValidString(eventName)) {
+                    System.out.println("Enter a valid event name : ");
+                    eventName = scanner.nextLine();
+                }
+                existingEvent.setEventName(eventName);
+            }
+            System.out.println("Enter new event venue (or press n to keep the current): ");
+            String eventVenue = scanner.nextLine();
+            if (!eventVenue.equalsIgnoreCase("n")) {
+                existingEvent.setEventVenue(eventVenue);
+            }
+            System.out.println("Enter new event date (YYYY/MM/DD) or press n to keep the current: ");
+            String inputEventDate = scanner.nextLine();
+            if (!inputEventDate.equalsIgnoreCase("n")) {
+                Date eventDate = DateUtils.validateDate(inputEventDate);
+                while (null == eventDate) {
+                    System.out.println("Enter a valid date (YYYY/MM/DD): ");
+                    inputEventDate = scanner.nextLine();
+                    eventDate = DateUtils.validateDate(inputEventDate);
+                }
+                existingEvent.setEventDate(eventDate);
+            }
+            System.out.println("Enter new event inc-harge or press n to keep the current: ");
+            String eventIncharge = scanner.nextLine();
+            if (!eventIncharge.equalsIgnoreCase("n")) {
+                while (!ValidateInputUtils.isValidString(eventIncharge)) {
+                    System.out.println("Enter a valid incharge name(alphabets only) : ");
+                    eventIncharge = scanner.nextLine();
+                }
+                existingEvent.setEventIncharge(eventIncharge);
+            }
+            System.out.println("Enter new event category or press n to keep the current: ");
+            String eventCategory = scanner.nextLine();
+            if(!eventCategory.equalsIgnoreCase("n")) {
+                while (!ValidateInputUtils.isValidString(eventCategory)) {
+                    System.out.println("Enter a valid event category(alphabets only) : ");
+                    eventCategory = scanner.nextLine();
+                }
+                existingEvent.setEventCategory(eventCategory);
+            }
             boolean isEventUpdated = eventService.updateEventDetails(existingEvent);
             if (isEventUpdated) {
                 System.out.println("Event details updated successfully.");
                 System.out.println(existingEvent);
+                logger.info("Updated the event details of event id {}", eventId);
             } else {
                 System.out.println("Failed to update event details.");
+                logger.warn("Event details not updated for event id {}", eventId);
             }
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -244,14 +262,17 @@ public class EventController {
     public void removeEventDetails() {
         System.out.println("Enter event id to remove: ");
         int eventId = scanner.nextInt();
+        logger.info("Removing event details of Id {}", eventId);
         try {
             if (eventService.removeEventDetails(eventId)) {
                 System.out.println("Event removed successfully.");
+                logger.info("Event details removed for id {}", eventId);
             } else {
                 System.out.println("Event not removed");
+                logger.warn("Event details not removed for event id {}", eventId);
             }
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -272,17 +293,20 @@ public class EventController {
             do {
                 System.out.println("Enter event id to participate: ");
                 int eventId = scanner.nextInt();
+                logger.info("Adding student {} to event {}", studentId, eventId);
                 boolean isStudentAddedToEvent = eventService.addStudentToEvent(studentId, eventId);
                 if (isStudentAddedToEvent) {
                     System.out.println("Student added to event successfully.");
+                    logger.info("Added student {} to event {}", studentId, eventId);
                 } else {
                     System.out.println("Failed to add student to event.");
+                    logger.warn("Failed to add student {} to event {}", studentId, eventId);
                 }
                 System.out.println("Do you want to participate in another event (Y / N) : ");
                 loop = scanner.next();
             } while (loop.equalsIgnoreCase("Y"));
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -296,15 +320,18 @@ public class EventController {
         int studentId = scanner.nextInt();
         System.out.println("Enter event id: ");
         int eventId = scanner.nextInt();
+        logger.info("Removing student {} from event {}", studentId, eventId);
         try {
             boolean result = eventService.removeStudentFromEvent(studentId, eventId);
             if (result) {
                 System.out.println("Student removed from event successfully.");
+                logger.info("Removed student {} from event {}", studentId, eventId);
             } else {
                 System.out.println("Failed to remove student from event.");
+                logger.warn("Failed to remove student {} from event {}", studentId, eventId);
             }
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 }

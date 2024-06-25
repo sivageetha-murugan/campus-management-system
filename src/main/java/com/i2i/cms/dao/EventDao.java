@@ -47,7 +47,7 @@ public class EventDao {
         try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.save(event);
-            transaction.commit();    
+            transaction.commit();
         } catch (Exception e) {
             if (null != transaction) {
                 transaction.rollback();

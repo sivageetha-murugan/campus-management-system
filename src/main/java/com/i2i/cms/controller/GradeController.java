@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.i2i.cms.exception.StudentException;
 import com.i2i.cms.models.Grade;
 import com.i2i.cms.models.Student;
@@ -19,6 +22,7 @@ import com.i2i.cms.utils.ValidateInputUtils;
 
 public class GradeController {
 
+    private static final Logger logger = LoggerFactory.getLogger(GradeController.class);
     private GradeService gradeService = new GradeService();
     private Scanner scanner = new Scanner(System.in);
 
@@ -37,6 +41,7 @@ public class GradeController {
         }
         System.out.println("Enter section : ");
         String section = scanner.next();
+        logger.info("Displaying students in grade {} and section {}", gradeLevel, section);
         Grade grade = new Grade();
         grade.setGrade(gradeLevel);
         grade.setSection(section);
@@ -44,13 +49,15 @@ public class GradeController {
             Set<Student> students = gradeService.getStudentsByGrade(grade);
             if (students.isEmpty()) {
                 System.out.println("\t\tNo students in this section");
+                logger.warn("No students in grade {} and section {}", gradeLevel, section);
                 return;
             }
             for (Student student : students) {
                 System.out.println(student);
             }
+            logger.info("Displayed students in grade {} and section {}", gradeLevel, section);
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         } 
     }
 
@@ -61,9 +68,11 @@ public class GradeController {
      */
     public void displayAllGradesWithStudents() {
         try {
+            logger.info("Displaying all grades and its student details");
             List<Grade> grades = gradeService.getAllGradeDetails();
             if (grades.isEmpty()) {
-                System.out.println("No grades entrolled");
+                System.out.println("No grades enrolled");
+                logger.warn("No grades available");
                 return;
             }
             for (Grade grade : grades) {
@@ -78,8 +87,9 @@ public class GradeController {
                 }
                 System.out.println("\n");
             }
+            logger.info("Displayed students in all grades and sections");
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 

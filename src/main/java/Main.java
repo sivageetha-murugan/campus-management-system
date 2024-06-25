@@ -3,6 +3,8 @@ import java.util.Scanner;
 import com.i2i.cms.controller.EventController;
 import com.i2i.cms.controller.GradeController;
 import com.i2i.cms.controller.StudentController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Main class for the Student Application.
@@ -16,6 +18,7 @@ import com.i2i.cms.controller.StudentController;
 
 public class Main {
 
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private StudentController studentController = new StudentController();
     private GradeController gradeController = new GradeController();
     private EventController eventController = new EventController();
@@ -36,6 +39,7 @@ public class Main {
  
     public void start() {
         while (true) {
+            logger.info("Entering into campus management system");
             System.out.println("\n\t----------------------------------------------------------");
             System.out.println("\t                   STUDENT APPLICATION                    ");
             System.out.println("\t----------------------------------------------------------");
@@ -86,6 +90,7 @@ public class Main {
                     break;
                 case 11:
                     System.out.println("Exiting...");
+                    logger.info("Exiting from campus management system");
                     System.exit(0);
                 default:
                     System.out.println("Invalid choice. Please try again.");

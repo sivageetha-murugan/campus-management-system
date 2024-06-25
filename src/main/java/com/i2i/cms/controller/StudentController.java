@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.i2i.cms.exception.StudentException;
 import com.i2i.cms.models.PersonalDetails;
 import com.i2i.cms.models.Student;
@@ -22,6 +25,7 @@ import com.i2i.cms.utils.ValidateInputUtils;
 
 public class StudentController {
 
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
     private StudentService studentService = new StudentService();
     private Scanner scanner = new Scanner(System.in);
 
@@ -40,6 +44,7 @@ public class StudentController {
                 System.out.println("Enter a valid name : ");
                 name = scanner.next();
             }
+            logger.info("Adding student details of student {}", name);
             System.out.println("Enter student date of birth (YYYY/MM/DD): ");
             String dob = scanner.next();
             Date dateOfBirth = DateUtils.validateDate(dob);
@@ -88,11 +93,18 @@ public class StudentController {
             }
             PersonalDetails personalDetails = new PersonalDetails(fatherName, motherName, phoneNumber, city, nationality);
             Student student = studentService.addStudent(name, dateOfBirth, marks, gradeLevel, personalDetails);
-            System.out.println(student);
-            System.out.println(student.getGrade());
-            System.out.println(student.getPersonalDetails());
+            if (student.getStudentId() > 0) {
+                System.out.println(student);
+                System.out.println(student.getGrade());
+                System.out.println(student.getPersonalDetails());
+                logger.info("Inserted student details of student {} with id {}", name, student.getStudentId());
+            }
+            else {
+                System.out.println("Student details not inserted");
+                logger.warn("Student details not inserted for student {}", name);
+            }
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -105,15 +117,18 @@ public class StudentController {
     public void getStudentDetailsById() {
         System.out.println("Enter student ID: ");
         int studentId = scanner.nextInt();
+        logger.info("Retrieving the details of a particular student of id {}", studentId);
         try {
             Student student = studentService.getStudentById(studentId);
             if (null != student) {
                 System.out.println(student);
+                logger.info("Retrieved student details of id {}", studentId);
             } else {
                 System.out.println("Student not found with ID: " + studentId);
+                logger.warn("Student details not retrieved for id {}", studentId);
             }
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }  
     }
 
@@ -124,6 +139,7 @@ public class StudentController {
      */
     public void displayAllStudents() {
         try {
+            logger.info("Displaying all student details");
             List<Student> students = studentService.getAllStudents();
             if (!students.isEmpty()) {
                 for (Student student : students) {
@@ -131,11 +147,13 @@ public class StudentController {
                     System.out.println(student.getGrade());
                     System.out.println(student.getPersonalDetails());
                 }
+                logger.info("Displayed all student details");
             } else {
                 System.out.println("No students found.");
+                logger.warn("No students enrolled");
             }
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -147,15 +165,18 @@ public class StudentController {
     public void deleteStudentById() {
         System.out.println("Enter student ID to delete: ");
         int studentId = scanner.nextInt();
+        logger.info("Deleting student details of id {}", studentId);
         try {
             boolean isDeleted = studentService.deleteStudentById(studentId);
             if (isDeleted) {
                 System.out.println("Student deleted successfully.");
+                logger.info("Student details deleted for id {}", studentId);
             } else {
-                System.out.println("Student not found with ID: " + studentId);
+                System.out.println("Student details can not be deleted for id : " + studentId);
+                logger.warn("Student details not deleted for id {}", studentId);
             }
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -167,10 +188,12 @@ public class StudentController {
     public void updateStudentDetails() {
         System.out.println("Enter student ID to update: ");
         int studentId = scanner.nextInt();
+        logger.info("Updating student details of student {}", studentId);
         try {
             Student existingStudent = studentService.getStudentById(studentId);
             if (null == existingStudent) {
                 System.out.println("Student not found with ID: " + studentId);
+                logger.warn("Student {} does not exist", studentId);
                 return;
             }
             System.out.println("Enter new student name (or press n to keep the current): ");
@@ -249,11 +272,13 @@ public class StudentController {
             boolean isUpdated = studentService.updateStudent(existingStudent);
             if (isUpdated) {
                 System.out.println("Student updated successfully.");
+                logger.info("Student details updated for id {}", studentId);
             } else {
                 System.out.println("Failed to update student.");
+                logger.warn("Student details not updated for id {}", studentId);
             }
         } catch (StudentException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 

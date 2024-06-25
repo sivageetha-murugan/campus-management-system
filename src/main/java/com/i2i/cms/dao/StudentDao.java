@@ -3,12 +3,12 @@ package com.i2i.cms.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.i2i.cms.models.Event;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.i2i.cms.exception.StudentException;
 import com.i2i.cms.helper.HibernateConnection;
+import com.i2i.cms.models.Event;
 import com.i2i.cms.models.Student;
 
 /**
