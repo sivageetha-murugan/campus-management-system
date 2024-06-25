@@ -38,14 +38,14 @@ public class Student {
     @Column(name = "id")
     private int studentId;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 30, nullable = false)
     private String studentName;
 
-    @Column(name = "dob")
+    @Column(name = "dob", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date studentDob;
 
-    @Column(name = "marks")
+    @Column(name = "marks", nullable = false)
     private int studentMarks;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })

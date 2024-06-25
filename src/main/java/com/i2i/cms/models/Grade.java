@@ -32,10 +32,10 @@ public class Grade {
     @Column(name = "id")
     private int gradeId;
 
-    @Column(name = "grade")
+    @Column(name = "grade", nullable = false)
     private int grade;
 
-    @Column(name = "section")
+    @Column(name = "section", length = 1, nullable = false)
     private String section;
 
     @OneToMany(mappedBy = "grade", fetch = FetchType.EAGER)

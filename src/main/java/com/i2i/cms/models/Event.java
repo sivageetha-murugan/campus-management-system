@@ -38,20 +38,20 @@ public class Event {
     @Column(name = "id")
     private int eventId;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 30, nullable = false)
     private String eventName;
 
-    @Column(name = "venue")
+    @Column(name = "venue", length = 30, nullable = false)
     private String eventVenue;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date eventDate;
 
-    @Column(name = "incharge")
+    @Column(name = "incharge", length = 30, nullable = false)
     private String eventIncharge;
 
-    @Column(name = "category")
+    @Column(name = "category", length = 30, nullable = false)
     private String eventCategory;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE})

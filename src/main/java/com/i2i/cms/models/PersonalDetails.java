@@ -30,19 +30,19 @@ public class PersonalDetails {
     @Column(name = "id")
     private int personalDetailsId;
 
-    @Column(name = "father_name")
+    @Column(name = "father_name", length = 30, nullable = false)
     private String fatherName;
 
-    @Column(name = "mother_name")
+    @Column(name = "mother_name", length = 30, nullable = false)
     private String motherName;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", length = 10, nullable = false)
     private String phoneNumber;
 
-    @Column(name = "city")
+    @Column(name = "city", length = 30, nullable = false)
     private String city;
 
-    @Column(name = "nationality")
+    @Column(name = "nationality", length = 30, nullable = false)
     private String nationality;
 
     @OneToOne(mappedBy = "personalDetails", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
