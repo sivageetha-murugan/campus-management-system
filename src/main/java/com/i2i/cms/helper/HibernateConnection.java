@@ -15,17 +15,12 @@ public class HibernateConnection {
 
     static{
         Dotenv dotenv = Dotenv.load();
-
-        String dbDriver = dotenv.get("DB_DRIVER");
-        String dbUrl = dotenv.get("DB_URL");
-        String dbUsername = dotenv.get("DB_USERNAME");
-        String dbPassword = dotenv.get("DB_PASSWORD");
         Configuration configuration = new Configuration();
         configuration.configure();
-        configuration.setProperty("hinernate.connection.driver_class", dbDriver);
-        configuration.setProperty("hibernate.connection.url", dbUrl);
-        configuration.setProperty("hibernate.connection.username", dbUsername);
-        configuration.setProperty("hibernate.connection.password", dbPassword);
+        configuration.setProperty("hinernate.connection.driver_class", dotenv.get("DB_DRIVER"));
+        configuration.setProperty("hibernate.connection.url", dotenv.get("DB_URL"));
+        configuration.setProperty("hibernate.connection.username", dotenv.get("DB_USERNAME"));
+        configuration.setProperty("hibernate.connection.password", dotenv.get("DB_PASSWORD"));
         sessionFactory = configuration.buildSessionFactory();
     }
 

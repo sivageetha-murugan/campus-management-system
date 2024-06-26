@@ -39,7 +39,7 @@ public class Main {
  
     public void start() {
         while (true) {
-            logger.info("Entering into campus management system");
+            logger.debug("Entering into campus management system");
             System.out.println("\n\t----------------------------------------------------------");
             System.out.println("\t                   STUDENT APPLICATION                    ");
             System.out.println("\t----------------------------------------------------------");
@@ -90,7 +90,7 @@ public class Main {
                     break;
                 case 11:
                     System.out.println("Exiting...");
-                    logger.info("Exiting from campus management system");
+                    logger.debug("Exiting from campus management system");
                     System.exit(0);
                 default:
                     System.out.println("Invalid choice. Please try again.");

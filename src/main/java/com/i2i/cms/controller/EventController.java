@@ -38,7 +38,7 @@ public class EventController {
      */
     public void manageEvents() {
         while (true) {
-            logger.info("Managing events");
+            logger.debug("Managing events");
             System.out.println("\n\t----------------------------------------------------------");
             System.out.println("\t                      Manage Events                      ");
             System.out.println("\t----------------------------------------------------------");
@@ -68,7 +68,7 @@ public class EventController {
                     removeEventDetails();
                     break;
                 case 6:
-                    logger.info("Exiting from managing events");
+                    logger.debug("Exiting from managing events");
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -121,7 +121,7 @@ public class EventController {
                 logger.info("Inserted the details successfully for event {}", event.getEventName());
             } else {
                 System.out.println("Event details not added.");
-                logger.warn("Event details not inserted for event {}", eventName);
+                logger.info("Event details not inserted for event {}", eventName);
             }
         } catch (StudentException e) {
             logger.error(e.getMessage());
@@ -140,7 +140,7 @@ public class EventController {
             List<Event> events = eventService.getAllEventDetails();
             if (events.isEmpty()) {
                 System.out.println("No events available.");
-                logger.warn("No events available");
+                logger.info("No events available");
             } else {
                 for (Event event : events) {
                     System.out.println(event);
@@ -167,7 +167,7 @@ public class EventController {
             Set<Student> students = eventService.getStudentsInEvent(eventId);
             if (students.isEmpty()) {
                 System.out.println("No students enrolled");
-                logger.warn("No students enrolled in event id {}", eventId);
+                logger.info("No students enrolled in event id {}", eventId);
                 return;
             }
             for (Student student : students) {
@@ -246,7 +246,7 @@ public class EventController {
                 logger.info("Updated the event details of event id {}", eventId);
             } else {
                 System.out.println("Failed to update event details.");
-                logger.warn("Event details not updated for event id {}", eventId);
+                logger.info("Event details not updated for event id {}", eventId);
             }
         } catch (StudentException e) {
             logger.error(e.getMessage());
@@ -269,7 +269,7 @@ public class EventController {
                 logger.info("Event details removed for id {}", eventId);
             } else {
                 System.out.println("Event not removed");
-                logger.warn("Event details not removed for event id {}", eventId);
+                logger.info("Event details not removed for event id {}", eventId);
             }
         } catch (StudentException e) {
             logger.error(e.getMessage());
@@ -300,7 +300,7 @@ public class EventController {
                     logger.info("Added student {} to event {}", studentId, eventId);
                 } else {
                     System.out.println("Failed to add student to event.");
-                    logger.warn("Failed to add student {} to event {}", studentId, eventId);
+                    logger.info("Failed to add student {} to event {}", studentId, eventId);
                 }
                 System.out.println("Do you want to participate in another event (Y / N) : ");
                 loop = scanner.next();
@@ -328,7 +328,7 @@ public class EventController {
                 logger.info("Removed student {} from event {}", studentId, eventId);
             } else {
                 System.out.println("Failed to remove student from event.");
-                logger.warn("Failed to remove student {} from event {}", studentId, eventId);
+                logger.info("Failed to remove student {} from event {}", studentId, eventId);
             }
         } catch (StudentException e) {
             logger.error(e.getMessage());

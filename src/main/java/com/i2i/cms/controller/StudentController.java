@@ -39,10 +39,10 @@ public class StudentController {
     public void addStudentDetails() {
         try {
             System.out.println("Enter student name: ");
-            String name = scanner.next();
+            String name = scanner.nextLine();
             while (!ValidateInputUtils.isValidString(name)) {
                 System.out.println("Enter a valid name : ");
-                name = scanner.next();
+                name = scanner.nextLine();
             }
             logger.info("Adding student details of student {}", name);
             System.out.println("Enter student date of birth (YYYY/MM/DD): ");
@@ -62,34 +62,34 @@ public class StudentController {
                 gradeLevel = scanner.nextInt();
             }
             System.out.println("Enter Student's Father Name : ");
-            String fatherName = scanner.next();
+            String fatherName = scanner.nextLine();
             while (!ValidateInputUtils.isValidString(fatherName)) {
                 System.out.println("Enter a valid name : ");
-                fatherName = scanner.next();
+                fatherName = scanner.nextLine();
             }
             System.out.println("Enter Student's Mother Name : ");
-            String motherName = scanner.next();
+            String motherName = scanner.nextLine();
             while (!ValidateInputUtils.isValidString(motherName)) {
                 System.out.println("Enter a valid name : ");
-                motherName = scanner.next();
+                motherName = scanner.nextLine();
             }
             System.out.println("Enter Contact No : ");
-            String phoneNumber = scanner.next();
+            String phoneNumber = scanner.nextLine();
             while (!ValidateInputUtils.isValidPhoneNumber(phoneNumber)) {
                 System.out.println("Enter a valid phone number : ");
-                phoneNumber = scanner.next();
+                phoneNumber = scanner.nextLine();
             }
             System.out.println("Enter City : ");
-            String city = scanner.next();
+            String city = scanner.nextLine();
             while (!ValidateInputUtils.isValidString(city)) {
                 System.out.println("Enter a valid city name(only characters) : ");
-                city = scanner.next();
+                city = scanner.nextLine();
             }
             System.out.println("Enter Nationality : ");
-            String nationality = scanner.next();
+            String nationality = scanner.nextLine();
             while (!ValidateInputUtils.isValidString(nationality)) {
                 System.out.println("Enter a valid string for nationality  : ");
-                nationality = scanner.next();
+                nationality = scanner.nextLine();
             }
             PersonalDetails personalDetails = new PersonalDetails(fatherName, motherName, phoneNumber, city, nationality);
             Student student = studentService.addStudent(name, dateOfBirth, marks, gradeLevel, personalDetails);
@@ -101,7 +101,7 @@ public class StudentController {
             }
             else {
                 System.out.println("Student details not inserted");
-                logger.warn("Student details not inserted for student {}", name);
+                logger.info("Student details not inserted for student {}", name);
             }
         } catch (StudentException e) {
             logger.error(e.getMessage());
@@ -125,7 +125,7 @@ public class StudentController {
                 logger.info("Retrieved student details of id {}", studentId);
             } else {
                 System.out.println("Student not found with ID: " + studentId);
-                logger.warn("Student details not retrieved for id {}", studentId);
+                logger.info("Student details not retrieved for id {}", studentId);
             }
         } catch (StudentException e) {
             logger.error(e.getMessage());
@@ -150,7 +150,7 @@ public class StudentController {
                 logger.info("Displayed all student details");
             } else {
                 System.out.println("No students found.");
-                logger.warn("No students enrolled");
+                logger.info("No students enrolled");
             }
         } catch (StudentException e) {
             logger.error(e.getMessage());
@@ -173,7 +173,7 @@ public class StudentController {
                 logger.info("Student details deleted for id {}", studentId);
             } else {
                 System.out.println("Student details can not be deleted for id : " + studentId);
-                logger.warn("Student details not deleted for id {}", studentId);
+                logger.info("Student details not deleted for id {}", studentId);
             }
         } catch (StudentException e) {
             logger.error(e.getMessage());
@@ -193,7 +193,7 @@ public class StudentController {
             Student existingStudent = studentService.getStudentById(studentId);
             if (null == existingStudent) {
                 System.out.println("Student not found with ID: " + studentId);
-                logger.warn("Student {} does not exist", studentId);
+                logger.info("Student {} does not exist", studentId);
                 return;
             }
             System.out.println("Enter new student name (or press n to keep the current): ");
@@ -275,7 +275,7 @@ public class StudentController {
                 logger.info("Student details updated for id {}", studentId);
             } else {
                 System.out.println("Failed to update student.");
-                logger.warn("Student details not updated for id {}", studentId);
+                logger.info("Student details not updated for id {}", studentId);
             }
         } catch (StudentException e) {
             logger.error(e.getMessage());

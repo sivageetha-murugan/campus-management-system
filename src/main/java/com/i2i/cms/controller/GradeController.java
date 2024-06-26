@@ -49,7 +49,7 @@ public class GradeController {
             Set<Student> students = gradeService.getStudentsByGrade(grade);
             if (students.isEmpty()) {
                 System.out.println("\t\tNo students in this section");
-                logger.warn("No students in grade {} and section {}", gradeLevel, section);
+                logger.info("No students in grade {} and section {}", gradeLevel, section);
                 return;
             }
             for (Student student : students) {
@@ -72,7 +72,7 @@ public class GradeController {
             List<Grade> grades = gradeService.getAllGradeDetails();
             if (grades.isEmpty()) {
                 System.out.println("No grades enrolled");
-                logger.warn("No grades available");
+                logger.info("No grades available");
                 return;
             }
             for (Grade grade : grades) {
