@@ -8,6 +8,8 @@ import java.util.Set;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.i2i.cms.exception.StudentException;
 import com.i2i.cms.helper.HibernateConnection;
@@ -24,6 +26,7 @@ import com.i2i.cms.models.Student;
 
 public class GradeDao {
 
+    private static final Logger logger = LoggerFactory.getLogger(GradeDao.class);
     /**
      * <p>
      * Inserts a new grade level and generates grade IDs for the section
@@ -41,11 +44,13 @@ public class GradeDao {
         Transaction transaction = null;
         try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
+            logger.debug("Opened session and transaction for inserting grade {} and section {}", grade.getGrade(), grade.getSection());
             session.save(grade);
             transaction.commit();
             return grade;
         } catch (Exception e) {
             if (null != transaction) {
+                logger.warn("Transaction rollback due to the insertion failed of grade {} section {}", grade.getGrade(), grade.getSection());
                 transaction.rollback();
             }
             throw new StudentException("Unable to insert grade " + grade.getGrade() + " and section " + grade.getSection(), e);
@@ -69,10 +74,11 @@ public class GradeDao {
     public long countStudentsInSection(int gradeId) {
         long count = 0;
         try (Session session = HibernateConnection.getSessionFactory().openSession()) {
+            logger.debug("Opened session for counting student in section by grade id {}", gradeId);
             String hql = "SELECT COUNT(s) FROM Student s WHERE s.grade.gradeId = :gradeId";
             count = (long) session.createQuery(hql).setParameter("gradeId", gradeId).uniqueResult();
         } catch (Exception e) {
-            throw new StudentException("Error occured while counting the students in grade id " + gradeId, e);
+            throw new StudentException("Error occurred while counting the students in grade id " + gradeId, e);
         }
         return count;
     }
@@ -93,6 +99,7 @@ public class GradeDao {
     public List<Grade> retrieveSectionsByGrade(int gradeLevel) {
         List<Grade> grades = new ArrayList<>();
         try (Session session = HibernateConnection.getSessionFactory().openSession()) {
+            logger.debug("Opened session for retrieving section for grade {}", gradeLevel);
             String hql = "from Grade g where g.grade = :grade";
             Query query = session.createQuery(hql, Grade.class);
             query.setParameter("grade", gradeLevel);
@@ -120,6 +127,7 @@ public class GradeDao {
         boolean isGradeExist = false;
         List<Grade> grades = new ArrayList<>();
         try (Session session = HibernateConnection.getSessionFactory().openSession()) {
+            logger.debug("Opened session for checking whether a grade {} is available or not ", gradeLevel);
             String hql = "from Grade g where g.grade = :grade";
             Query query = session.createQuery(hql, Grade.class);
             query.setParameter("grade", gradeLevel);
@@ -150,6 +158,7 @@ public class GradeDao {
     public Set<Student> retrieveStudentsByGrade(Grade grade) {
         Set<Student> students = new HashSet<>();
         try (Session session = HibernateConnection.getSessionFactory().openSession()) {
+            logger.debug("Opened session for retrieving students in grade {} section {}", grade.getGrade(), grade.getSection());
             String hql = "from Grade g where g.grade = :grade and g.section = :section";
             Query<Grade> query = session.createQuery(hql, Grade.class);
             query.setParameter("grade", grade.getGrade());
@@ -174,6 +183,7 @@ public class GradeDao {
     public List<Grade> retrieveAllGradeDetails() {
         List<Grade> grades = new ArrayList<>();
         try (Session session = HibernateConnection.getSessionFactory().openSession()) {
+            logger.debug("Opened session for retrieving all grades and it students");
             grades = session.createQuery("from Grade", Grade.class).list();
         } catch (Exception e) {
             throw new StudentException("Unable to retrieve grades ", e);

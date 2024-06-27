@@ -38,7 +38,7 @@ public class EventController {
      */
     public void manageEvents() {
         while (true) {
-            logger.debug("Managing events");
+            logger.debug("Entering into Manage events");
             System.out.println("\n\t----------------------------------------------------------");
             System.out.println("\t                      Manage Events                      ");
             System.out.println("\t----------------------------------------------------------");
@@ -68,7 +68,7 @@ public class EventController {
                     removeEventDetails();
                     break;
                 case 6:
-                    logger.debug("Exiting from managing events");
+                    logger.debug("Exiting from manage events");
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -83,10 +83,10 @@ public class EventController {
      * </p>
      */
     public void addEventDetails() {
+        logger.debug("Entering into add event details");
         System.out.println("Enter event name: ");
         scanner.nextLine();
         String eventName = scanner.nextLine();
-        logger.info("Adding event details of event {}", eventName);
         while (!ValidateInputUtils.isValidString(eventName)) {
             System.out.println("Enter a valid event name : ");
             eventName = scanner.nextLine();
@@ -118,7 +118,7 @@ public class EventController {
             event = eventService.addEvent(event);
             if (null != event) {
                 System.out.println(event);
-                logger.info("Inserted the details successfully for event {}", event.getEventName());
+                logger.info("Inserted the details successfully for event {} with id {}", event.getEventName(), event.getEventId());
             } else {
                 System.out.println("Event details not added.");
                 logger.info("Event details not inserted for event {}", eventName);
@@ -126,6 +126,7 @@ public class EventController {
         } catch (StudentException e) {
             logger.error(e.getMessage());
         }
+        logger.debug("Exiting from add event details");
     }
 
 
@@ -135,8 +136,9 @@ public class EventController {
      * </p>
      */
     public void displayAllEvents() {
-        logger.info("Displaying all event details");
+        logger.debug("Entering into display all events");
         try {
+            logger.info("Displaying all events");
             List<Event> events = eventService.getAllEventDetails();
             if (events.isEmpty()) {
                 System.out.println("No events available.");
@@ -150,6 +152,7 @@ public class EventController {
         } catch (StudentException e) {
             logger.error(e.getMessage());
         }
+        logger.debug("Exiting from display all events");
     }
 
     /**
@@ -159,6 +162,7 @@ public class EventController {
      * </p>
      */
     public void displayStudentsInEvent() {
+        logger.debug("Entering into display students in event");
         try {
             displayAllEvents();
             System.out.println("Enter event id: ");
@@ -177,6 +181,7 @@ public class EventController {
         } catch (StudentException e) {
             logger.error(e.getMessage());
         }
+        logger.debug("Exiting from display students in event");
     }
 
     /**
@@ -186,6 +191,7 @@ public class EventController {
      * </p>
      */
     public void updateEventDetails() {
+        logger.debug("Entering into update event details");
         System.out.println("Enter event id to update: ");
         int eventId = scanner.nextInt();
         logger.info("Updating event details of id {}", eventId);
@@ -251,6 +257,7 @@ public class EventController {
         } catch (StudentException e) {
             logger.error(e.getMessage());
         }
+        logger.debug("Exiting from update event details");
     }
 
     /**
@@ -260,6 +267,7 @@ public class EventController {
      * </p>
      */
     public void removeEventDetails() {
+        logger.debug("Entering into remove event details");
         System.out.println("Enter event id to remove: ");
         int eventId = scanner.nextInt();
         logger.info("Removing event details of Id {}", eventId);
@@ -274,6 +282,7 @@ public class EventController {
         } catch (StudentException e) {
             logger.error(e.getMessage());
         }
+        logger.debug("Exiting from remove event details");
     }
 
     /**
@@ -284,6 +293,7 @@ public class EventController {
      * </p>
      */
     public void addStudentToEvents() {
+        logger.debug("Entering into add student to events");
         System.out.println("Enter student id : ");
         int studentId = scanner.nextInt();
         try {
@@ -308,6 +318,7 @@ public class EventController {
         } catch (StudentException e) {
             logger.error(e.getMessage());
         }
+        logger.debug("Exiting from add student to events");
     }
 
     /**
@@ -316,6 +327,7 @@ public class EventController {
      * </p>
      */
     public void removeStudentFromEvent() {
+        logger.debug("Entering into remove student from event");
         System.out.println("Enter student id: ");
         int studentId = scanner.nextInt();
         System.out.println("Enter event id: ");
@@ -333,6 +345,7 @@ public class EventController {
         } catch (StudentException e) {
             logger.error(e.getMessage());
         }
+        logger.debug("Exiting from remove student from event");
     }
 }
     

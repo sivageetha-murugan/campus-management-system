@@ -33,6 +33,7 @@ public class GradeController {
      * </p>
      */
     public void displayStudentsByGrade() {
+        logger.debug("Entering into display students by grade");
         System.out.println("Enter grade : ");
         int gradeLevel = scanner.nextInt();
         while (!ValidateInputUtils.isValidGrade(gradeLevel)) {
@@ -58,7 +59,8 @@ public class GradeController {
             logger.info("Displayed students in grade {} and section {}", gradeLevel, section);
         } catch (StudentException e) {
             logger.error(e.getMessage());
-        } 
+        }
+        logger.debug("Exiting from display students by grade");
     }
 
     /**
@@ -67,6 +69,7 @@ public class GradeController {
      * </p>
      */
     public void displayAllGradesWithStudents() {
+        logger.debug("Entering into display all grades with students");
         try {
             logger.info("Displaying all grades and its student details");
             List<Grade> grades = gradeService.getAllGradeDetails();
@@ -91,6 +94,7 @@ public class GradeController {
         } catch (StudentException e) {
             logger.error(e.getMessage());
         }
+        logger.debug("Exiting from display all grades with students");
     }
 
 }

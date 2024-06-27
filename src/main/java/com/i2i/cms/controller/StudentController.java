@@ -37,6 +37,7 @@ public class StudentController {
      * </p>
      */
     public void addStudentDetails() {
+        logger.debug("Entering into add student details");
         try {
             System.out.println("Enter student name: ");
             String name = scanner.nextLine();
@@ -106,6 +107,7 @@ public class StudentController {
         } catch (StudentException e) {
             logger.error(e.getMessage());
         }
+        logger.debug("Exiting from add student details");
     }
 
     /**
@@ -115,6 +117,7 @@ public class StudentController {
      * </p>
      */
     public void getStudentDetailsById() {
+        logger.debug("Entering into get student details by id");
         System.out.println("Enter student ID: ");
         int studentId = scanner.nextInt();
         logger.info("Retrieving the details of a particular student of id {}", studentId);
@@ -129,7 +132,8 @@ public class StudentController {
             }
         } catch (StudentException e) {
             logger.error(e.getMessage());
-        }  
+        }
+        logger.debug("Exiting from get student details by id");
     }
 
     /**
@@ -138,6 +142,7 @@ public class StudentController {
      * </p>
      */
     public void displayAllStudents() {
+        logger.debug("Entering into display all students");
         try {
             logger.info("Displaying all student details");
             List<Student> students = studentService.getAllStudents();
@@ -155,6 +160,7 @@ public class StudentController {
         } catch (StudentException e) {
             logger.error(e.getMessage());
         }
+        logger.debug("Exiting from display all students");
     }
 
     /**
@@ -163,6 +169,7 @@ public class StudentController {
      * </p>
      */
     public void deleteStudentById() {
+        logger.debug("Entering into delete student by id");
         System.out.println("Enter student ID to delete: ");
         int studentId = scanner.nextInt();
         logger.info("Deleting student details of id {}", studentId);
@@ -178,6 +185,7 @@ public class StudentController {
         } catch (StudentException e) {
             logger.error(e.getMessage());
         }
+        logger.debug("Exiting from delete student by id");
     }
 
     /**
@@ -186,6 +194,7 @@ public class StudentController {
      * </p>
      */
     public void updateStudentDetails() {
+        logger.debug("Entering into update student details");
         System.out.println("Enter student ID to update: ");
         int studentId = scanner.nextInt();
         logger.info("Updating student details of student {}", studentId);
@@ -280,6 +289,7 @@ public class StudentController {
         } catch (StudentException e) {
             logger.error(e.getMessage());
         }
+        logger.debug("Exiting from update student details");
     }
 
 }

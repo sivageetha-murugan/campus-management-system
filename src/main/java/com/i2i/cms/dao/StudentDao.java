@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.i2i.cms.exception.StudentException;
 import com.i2i.cms.helper.HibernateConnection;
@@ -19,6 +21,7 @@ import com.i2i.cms.models.Student;
 
 public class StudentDao {
 
+    private static final Logger logger = LoggerFactory.getLogger(StudentDao.class);
     /**
      * <p>
      * Insert the details of the student such as student id, name, dob, marks and grade details and 
@@ -44,11 +47,13 @@ public class StudentDao {
         Transaction transaction = null;
         try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
+            logger.debug("Opened session and transaction for inserting student details of student {}", student.getStudentName());
             session.save(student);
             transaction.commit();
             return student;
         } catch (Exception e) {
             if (null != transaction) {
+                logger.warn("Transaction rollback due to the failure of inserting student {} details", student.getStudentName());
                 transaction.rollback();
             }
             throw new StudentException("Unable to insert the student details of student " + student.getStudentName(), e);
@@ -70,6 +75,7 @@ public class StudentDao {
      */
     public Student retrieveDetailsById(int studentId) {
         try (Session session = HibernateConnection.getSessionFactory().openSession()) {
+            logger.debug("Opened session for retrieving student {} details", studentId);
             Student student = session.get(Student.class, studentId);
             return student;
         } catch (Exception e) {
@@ -91,6 +97,7 @@ public class StudentDao {
     public List<Student> retrieveAllStudentDetails() {
         List<Student> students = new ArrayList<>();
         try (Session session = HibernateConnection.getSessionFactory().openSession()) {
+            logger.debug("Opened session for retrieving all student details");
             students = session.createQuery("from Student", Student.class).list();
         } catch (Exception e) {
             throw new StudentException("Unable to access student details", e);
@@ -115,6 +122,7 @@ public class StudentDao {
         Transaction transaction = null;
         try (Session session = HibernateConnection.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
+            logger.debug("Opened session and transaction for deleting the details of student {}", studentId);
             Student student = session.get(Student.class, studentId);
             if (student != null) {
                 for (Event event : student.getEvents()) {
@@ -127,6 +135,7 @@ public class StudentDao {
             }
         } catch (Exception e) {
             if (null != transaction) {
+                logger.warn("Transaction rolleback due to the failue of deleting student {} details", studentId);
                 transaction.rollback();
             }
             throw new StudentException("Unable to delete the student details of id " + studentId, e);
@@ -158,11 +167,13 @@ public class StudentDao {
          Transaction transaction = null;
          try (Session session = HibernateConnection.getSessionFactory().openSession()) {
              transaction = session.beginTransaction();
+             logger.debug("Opened session and transaction for updating the details of student {}", student.getStudentId());
              session.update(student);
              transaction.commit();
              return true;
          } catch (Exception e) {
              if (null != transaction) {
+                 logger.warn("Transaction rollback due to the failure of updating student {} details", student.getStudentId());
                  transaction.rollback();
              }
              throw new StudentException("Unable to update the details of student " + student.getStudentId(), e);
